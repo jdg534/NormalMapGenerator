@@ -1,0 +1,28 @@
+﻿Build started 06/02/2015 15:23:32.
+     1>Project "L:\work\c++ related stuff\bump map generator\BumpMapFromHeightMap\BumpMapFromHeightMap\BumpMapFromHeightMap.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(99): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(103): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(113): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(117): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(128): warning C4244: 'initializing' : conversion from 'unsigned int' to 'float', possible loss of data
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(130): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(132): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(207): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(209): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(223): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(308): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(313): warning C4018: '<' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(336): warning C4018: '>' : signed/unsigned mismatch
+     1>l:\work\c++ related stuff\bump map generator\bumpmapfromheightmap\bumpmapfromheightmap\main.cpp(341): warning C4018: '>' : signed/unsigned mismatch
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"L:\work\c++ related stuff\bump map generator\BumpMapFromHeightMap\Debug\BumpMapFromHeightMap.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"L:\work\c++ related stuff\bump map generator\BumpMapFromHeightMap\Debug\BumpMapFromHeightMap.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"L:\work\c++ related stuff\bump map generator\BumpMapFromHeightMap\Debug\BumpMapFromHeightMap.lib" /MACHINE:X86 Debug\main.obj
+         Debug\Math.obj
+         BumpMapFromHeightMap.vcxproj -> L:\work\c++ related stuff\bump map generator\BumpMapFromHeightMap\Debug\BumpMapFromHeightMap.exe
+     1>Done Building Project "L:\work\c++ related stuff\bump map generator\BumpMapFromHeightMap\BumpMapFromHeightMap\BumpMapFromHeightMap.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.39
