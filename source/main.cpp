@@ -7,6 +7,8 @@ int main(int argCount, char ** args)
 
 	MapGeneratorWindow mapGeneratorWindow;
 
+	mapGeneratorWindow.init();
+
 	mapGeneratorWindow.show();
 
 	return app.exec();

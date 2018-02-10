@@ -15,7 +15,11 @@ public:
     explicit MapGeneratorWindow(QWidget *parent = 0);
     ~MapGeneratorWindow();
 
+	void init();
+
 private:
+	void onOpenMap();
+
     Ui::MapGeneratorWindow *ui;
 };
 
