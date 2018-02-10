@@ -18,6 +18,14 @@ MapGeneratorWindow::~MapGeneratorWindow()
 void MapGeneratorWindow::init()
 {
 	// popupate the selectable input map combo box (this might be refactored out later)
+	QStringList inputMapTypes;
+	inputMapTypes.push_back("Diffuse Map");
+	inputMapTypes.push_back("Height Map");
+
+
+	ui->comboBox_inputMapType->addItems(inputMapTypes);
+
+	ui->comboBox_inputMapType->setCurrentIndex(0);
 
 	// connect the on load 
 	connect(ui->actionSet_Input_Map, &QAction::triggered, this, &MapGeneratorWindow::onOpenMap);
