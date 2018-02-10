@@ -76,7 +76,18 @@
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QComboBox" name="comboBox_"/>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QComboBox" name="comboBox_"/>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_generateMap">
+           <property name="text">
+            <string>Generate Map</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox_normalMapControls_2">
@@ -141,7 +152,7 @@
             <x>0</x>
             <y>0</y>
             <width>415</width>
-            <height>385</height>
+            <height>380</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
