@@ -6,4 +6,11 @@ project (ImageMapGenerator)
 
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
 
+# Tell CMake to run moc when necessary:
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+
 add_subdirectory(source)

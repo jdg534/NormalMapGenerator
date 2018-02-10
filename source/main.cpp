@@ -1,9 +1,13 @@
-#include <iostream>
+#include "mapgeneratorwindow.h"
+#include <QApplication>
 
-int main()
+int main(int argCount, char ** args)
 {
-	std::cout << "This is a place holder, next get a Qt window on screen." << std::endl;
-	
-	std::cin.get();
-	return 0;
+	QApplication app(argCount, args);
+
+	MapGeneratorWindow mapGeneratorWindow;
+
+	mapGeneratorWindow.show();
+
+	return app.exec();
 }
