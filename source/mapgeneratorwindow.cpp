@@ -79,6 +79,25 @@ void MapGeneratorWindow::onGenerateMapButtonPressed()
 	{
 		return;
 	}
+
+	if (ui->comboBox_->currentText().toStdString() == "Normal Map")
+	{
+		float ampVal = 1.0f;
+		if (ui->lineEdit_bumpAmp->text().toStdString() != "")
+		{
+			ampVal = ui->lineEdit_bumpAmp->text().toFloat();
+		}
+		generateNormalMap(ampVal);
+	}
+	else if (ui->comboBox_->currentText().toStdString() == "Edge Map")
+	{
+		float sensitivityVal = 1.0f;
+		if (ui->lineEdit_bumpAmp->text().toStdString() != "")
+		{
+			sensitivityVal = ui->lineEdit_bumpAmp->text().toFloat();
+		}
+		generateEdgeMap(sensitivityVal);
+	}
 }
 
 bool MapGeneratorWindow::validateInputs()
@@ -119,4 +138,88 @@ bool MapGeneratorWindow::validateInputMapCorrectForOutput()
 	}
 
 	return false;
+}
+
+void MapGeneratorWindow::generateEdgeMap(float sensitivity)
+{
+	const QPixmap * inputPixelMap = ui->label_inputMap->pixmap();
+	
+	const QImage originalImage = inputPixelMap->toImage();
+
+	QImage generatedMap(originalImage);
+
+	int originalImageWidth = originalImage.width(),
+		originalImageHeight = originalImage.height();
+
+	int halfWayWidth = originalImageWidth / 2;
+	int halfWayHeight = originalImageHeight / 2;
+	
+	QRgb primaryColour = qRgb(0, 0, 0);
+	QRgb secondaryColour = qRgb(255, 255, 255);
+
+	for (size_t i = 0; i < originalImageWidth; ++i)
+	{
+		for (size_t j = 0; j < originalImageHeight; ++j)
+		{
+			bool pastHalfWayPointX = i > halfWayWidth;
+			bool pastHalfWayPointY = j > halfWayHeight;
+
+			bool usePrimaryColour = pastHalfWayPointX ^ pastHalfWayPointY;
+
+			if (usePrimaryColour)
+			{
+				generatedMap.setPixelColor(i, j, primaryColour);
+			}
+			else
+			{
+				generatedMap.setPixelColor(i, j, secondaryColour);
+			}
+			
+		}
+	}
+
+	QPixmap outputPixelMap = QPixmap::fromImage(generatedMap);
+	ui->label_outputMap->setPixmap(outputPixelMap);
+}
+
+void MapGeneratorWindow::generateNormalMap(float amplertude)
+{
+	const QPixmap * inputPixelMap = ui->label_inputMap->pixmap();
+
+	const QImage originalImage = inputPixelMap->toImage();
+
+	QImage generatedMap(originalImage);
+
+	int originalImageWidth = originalImage.width(),
+		originalImageHeight = originalImage.height();
+
+	int halfWayWidth = originalImageWidth / 2;
+	int halfWayHeight = originalImageHeight / 2;
+
+	QRgb primaryColour = qRgb(0, 0, 0);
+	QRgb secondaryColour = qRgb(255, 255, 255);
+
+	for (size_t i = 0; i < originalImageWidth; ++i)
+	{
+		for (size_t j = 0; j < originalImageHeight; ++j)
+		{
+			bool pastHalfWayPointX = i > halfWayWidth;
+			bool pastHalfWayPointY = j > halfWayHeight;
+
+			bool usePrimaryColour = pastHalfWayPointX ^ pastHalfWayPointY;
+
+			if (usePrimaryColour)
+			{
+				generatedMap.setPixelColor(i, j, primaryColour);
+			}
+			else
+			{
+				generatedMap.setPixelColor(i, j, secondaryColour);
+			}
+
+		}
+	}
+
+	QPixmap outputPixelMap = QPixmap::fromImage(generatedMap);
+	ui->label_outputMap->setPixmap(outputPixelMap);
 }

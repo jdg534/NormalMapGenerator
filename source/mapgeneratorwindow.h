@@ -25,6 +25,9 @@ private:
 	bool validateInputs();
 	bool validateInputMapCorrectForOutput();
 
+	// actualy generation methods
+	void generateEdgeMap(float sensitivity);
+	void generateNormalMap(float amplertude);
 
     Ui::MapGeneratorWindow *ui;
 };
