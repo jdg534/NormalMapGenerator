@@ -2,10 +2,12 @@
 #include "ui_mapgeneratorwindow.h"
 
 #include <QFileDialog>
+#include <QValidator>
 
-MapGeneratorWindow::MapGeneratorWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MapGeneratorWindow)
+
+MapGeneratorWindow::MapGeneratorWindow(QWidget *parent) 
+	: QMainWindow(parent)
+	, ui(new Ui::MapGeneratorWindow)
 {
     ui->setupUi(this);
 }
@@ -27,8 +29,23 @@ void MapGeneratorWindow::init()
 
 	ui->comboBox_inputMapType->setCurrentIndex(0);
 
-	// connect the on load 
+	QStringList outputMapTypes;
+	outputMapTypes.push_back("Normal Map");
+	outputMapTypes.push_back("Edge Map");
+
+	ui->comboBox_->addItems(outputMapTypes);
+	ui->comboBox_->setCurrentIndex(1);
+
+	// connect ui object to correct methods
 	connect(ui->actionSet_Input_Map, &QAction::triggered, this, &MapGeneratorWindow::onOpenMap);
+	connect(ui->pushButton_generateMap, &QPushButton::pressed, this, &MapGeneratorWindow::onGenerateMapButtonPressed);
+
+	// disable the generate button (gets re enabled once an input map is provided)
+	ui->pushButton_generateMap->setDisabled(true);
+
+	// add QValidator objects for the
+	ui->lineEdit_bumpAmp->setValidator(new QDoubleValidator());
+	ui->lineEdit_edgeMapSensivity->setValidator(new QDoubleValidator());
 }
 
 void MapGeneratorWindow::onOpenMap()
@@ -45,4 +62,61 @@ void MapGeneratorWindow::onOpenMap()
 	QPixmap imagePixelMap(inputFileName);
 
 	ui->label_inputMap->setPixmap(imagePixelMap);
+
+	// enable the generate button
+	ui->pushButton_generateMap->setDisabled(false);
+}
+
+void MapGeneratorWindow::onGenerateMapButtonPressed()
+{
+	/* 
+	1. check the input and output combo boxes are for the correct map type
+	2. check that the map generation controls aren't values that will crash the program
+	3. once validation has been passed call the correct generation method
+	*/
+
+	if (!validateInputs())
+	{
+		return;
+	}
+}
+
+bool MapGeneratorWindow::validateInputs()
+{
+	if (!validateInputMapCorrectForOutput())
+	{
+		return false;
+	}
+
+	// add additional validation here if needed
+	
+	return true;
+}
+
+bool MapGeneratorWindow::validateInputMapCorrectForOutput()
+{
+	// if diffuse map, then edge map
+	// if height map, then normal map
+
+	if (ui->comboBox_inputMapType->currentText().toStdString() == "Diffuse Map")
+	{
+		if (ui->comboBox_->currentText().toStdString() == "Edge Map")
+		{
+			return true;
+		}
+	}
+	else if (ui->comboBox_inputMapType->currentText().toStdString() == "Height Map")
+	{
+
+		if (ui->comboBox_->currentText().toStdString() == "Normal Map")
+		{
+			return true;
+		}
+		else if (ui->comboBox_->currentText().toStdString() == "Edge Map")
+		{
+			return true;
+		}
+	}
+
+	return false;
 }

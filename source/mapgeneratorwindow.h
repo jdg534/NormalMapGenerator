@@ -19,6 +19,12 @@ public:
 
 private:
 	void onOpenMap();
+	void onGenerateMapButtonPressed();
+
+	// validation methods
+	bool validateInputs();
+	bool validateInputMapCorrectForOutput();
+
 
     Ui::MapGeneratorWindow *ui;
 };
