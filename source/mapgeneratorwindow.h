@@ -19,6 +19,7 @@ public:
 
 private:
 	void onOpenMap();
+	void onSaveOutputMap();
 	void onGenerateMapButtonPressed();
 
 	// validation methods
@@ -26,8 +27,11 @@ private:
 	bool validateInputMapCorrectForOutput();
 
 	// actualy generation methods
-	void generateEdgeMap(float sensitivity);
+	void generateEdgeMap(int sensitivity);
 	void generateNormalMap(float amplertude);
+
+	inline unsigned int difference(const QRgb a, const QRgb b);
+
 
     Ui::MapGeneratorWindow *ui;
 };

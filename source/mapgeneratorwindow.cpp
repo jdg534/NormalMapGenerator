@@ -4,6 +4,8 @@
 #include <QFileDialog>
 #include <QValidator>
 
+#include <JoshMath.h>
+
 
 MapGeneratorWindow::MapGeneratorWindow(QWidget *parent) 
 	: QMainWindow(parent)
@@ -39,13 +41,14 @@ void MapGeneratorWindow::init()
 	// connect ui object to correct methods
 	connect(ui->actionSet_Input_Map, &QAction::triggered, this, &MapGeneratorWindow::onOpenMap);
 	connect(ui->pushButton_generateMap, &QPushButton::pressed, this, &MapGeneratorWindow::onGenerateMapButtonPressed);
+	connect(ui->actionSave_Output_Map, &QAction::triggered, this, &MapGeneratorWindow::onSaveOutputMap);
 
 	// disable the generate button (gets re enabled once an input map is provided)
 	ui->pushButton_generateMap->setDisabled(true);
 
 	// add QValidator objects for the
 	ui->lineEdit_bumpAmp->setValidator(new QDoubleValidator());
-	ui->lineEdit_edgeMapSensivity->setValidator(new QDoubleValidator());
+	ui->lineEdit_edgeMapSensivity->setValidator(new QIntValidator(0, 255 * 3));
 }
 
 void MapGeneratorWindow::onOpenMap()
@@ -67,6 +70,23 @@ void MapGeneratorWindow::onOpenMap()
 	ui->pushButton_generateMap->setDisabled(false);
 }
 
+void MapGeneratorWindow::onSaveOutputMap()
+{
+	// make sure that theres a map to save, if not return
+
+	const QPixmap * outputImage = ui->label_outputMap->pixmap();
+
+	if (outputImage)
+	{
+		QString saveFileStr = QFileDialog::getSaveFileName(this, tr("Save output"), "", tr("Images (*.png)"));
+		if (saveFileStr != QString())
+		{
+			// save the file
+			outputImage->save(saveFileStr, "png");
+		}
+	}
+}
+
 void MapGeneratorWindow::onGenerateMapButtonPressed()
 {
 	/* 
@@ -80,6 +100,10 @@ void MapGeneratorWindow::onGenerateMapButtonPressed()
 		return;
 	}
 
+	// clear the output label pixel map
+	QPixmap defaultMap(10, 10);
+	ui->label_outputMap->setPixmap(defaultMap);
+
 	if (ui->comboBox_->currentText().toStdString() == "Normal Map")
 	{
 		float ampVal = 1.0f;
@@ -91,10 +115,10 @@ void MapGeneratorWindow::onGenerateMapButtonPressed()
 	}
 	else if (ui->comboBox_->currentText().toStdString() == "Edge Map")
 	{
-		float sensitivityVal = 1.0f;
-		if (ui->lineEdit_bumpAmp->text().toStdString() != "")
+		int sensitivityVal = 50;
+		if (ui->lineEdit_edgeMapSensivity->text().toStdString() != "")
 		{
-			sensitivityVal = ui->lineEdit_bumpAmp->text().toFloat();
+			sensitivityVal = ui->lineEdit_edgeMapSensivity->text().toInt();
 		}
 		generateEdgeMap(sensitivityVal);
 	}
@@ -140,8 +164,11 @@ bool MapGeneratorWindow::validateInputMapCorrectForOutput()
 	return false;
 }
 
-void MapGeneratorWindow::generateEdgeMap(float sensitivity)
+void MapGeneratorWindow::generateEdgeMap(int sensitivity)
 {
+	// clear the current output map
+	ui->label_outputMap->clear();
+
 	const QPixmap * inputPixelMap = ui->label_inputMap->pixmap();
 	
 	const QImage originalImage = inputPixelMap->toImage();
@@ -151,30 +178,56 @@ void MapGeneratorWindow::generateEdgeMap(float sensitivity)
 	int originalImageWidth = originalImage.width(),
 		originalImageHeight = originalImage.height();
 
-	int halfWayWidth = originalImageWidth / 2;
-	int halfWayHeight = originalImageHeight / 2;
 	
 	QRgb primaryColour = qRgb(0, 0, 0);
-	QRgb secondaryColour = qRgb(255, 255, 255);
+	QRgb edgeColour = qRgb(255, 255, 255);
 
 	for (size_t i = 0; i < originalImageWidth; ++i)
 	{
 		for (size_t j = 0; j < originalImageHeight; ++j)
 		{
-			bool pastHalfWayPointX = i > halfWayWidth;
-			bool pastHalfWayPointY = j > halfWayHeight;
+			generatedMap.setPixelColor(i, j, primaryColour);
+		}
+	}
 
-			bool usePrimaryColour = pastHalfWayPointX ^ pastHalfWayPointY;
+	
+	// refactor to use the matrix approach later
+	
+	// now run the edge detection step
+	
+	// vertical scan
+	for (int x = 0; x < originalImageWidth; ++x)
+	{
+		for (int y = 1; y < originalImageHeight; ++y)
+		{
+			// if it's an edge set the pixel to the edge colour
+			const QRgb lastPx = originalImage.pixel(x, y - 1);
+			const QRgb currentPx = originalImage.pixel(x, y);
 
-			if (usePrimaryColour)
+			int diff = difference(lastPx, currentPx);
+
+			if (diff > sensitivity)
 			{
-				generatedMap.setPixelColor(i, j, primaryColour);
+				generatedMap.setPixelColor(x, y, edgeColour);
 			}
-			else
+		}
+	}
+
+	// horisontal scan
+	for (int y = 0; y < originalImageHeight; ++y)
+	{
+		for (int x = 1; x < originalImageWidth; ++x)
+		{
+			// if it's an edge set the pixel to the edge colour
+			const QRgb lastPx = originalImage.pixel(x - 1, y);
+			const QRgb currentPx = originalImage.pixel(x, y);
+
+			int diff = difference(lastPx, currentPx);
+
+			if (diff > sensitivity)
 			{
-				generatedMap.setPixelColor(i, j, secondaryColour);
+				generatedMap.setPixelColor(x, y, edgeColour);
 			}
-			
 		}
 	}
 
@@ -222,4 +275,21 @@ void MapGeneratorWindow::generateNormalMap(float amplertude)
 
 	QPixmap outputPixelMap = QPixmap::fromImage(generatedMap);
 	ui->label_outputMap->setPixmap(outputPixelMap);
+}
+
+inline unsigned int MapGeneratorWindow::difference(const QRgb a, const QRgb b)
+{
+	int aRed = qRed(a);
+	int aGreen = qGreen(a);
+	int aBlue = qBlue(a);
+
+	int bRed = qRed(b);
+	int bGreen = qGreen(b);
+	int bBlue = qBlue(b);
+
+	int diff = 0;
+	diff += abs(aRed - bRed);
+	diff += abs(aGreen - bGreen);
+	diff += abs(aBlue- bBlue);
+	return diff;
 }

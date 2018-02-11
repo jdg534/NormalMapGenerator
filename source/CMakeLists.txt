@@ -6,9 +6,12 @@ add_executable(ImageMapGenExe ${SourceFiles})
 
 
 # make sure that ImageMapGenExe has access to the include directories and libraries
-
-
 target_link_libraries(ImageMapGenExe Qt5::Widgets)
+
+# now the maths library
+include_directories("../JoshMath") # refactor this to target_include_directories
+
+target_link_libraries(ImageMapGenExe JoshMath)
 
 IF(WIN32)
 	SET(TargetDlls "Qt5Core.dll;Qt5Cored.dll;Qt5Gui.dll;Qt5Guid.dll;Qt5Widgets.dll;Qt5Widgetsd.dll")

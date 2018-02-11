@@ -12,5 +12,7 @@ set(CMAKE_AUTOUIC ON)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+# add maths library
+add_subdirectory(JoshMath)
 
 add_subdirectory(source)
