@@ -246,30 +246,25 @@ void MapGeneratorWindow::generateNormalMap(float amplertude)
 	int originalImageWidth = originalImage.width(),
 		originalImageHeight = originalImage.height();
 
-	int halfWayWidth = originalImageWidth / 2;
-	int halfWayHeight = originalImageHeight / 2;
+	const float imageAspectRatio = (float)originalImageWidth / (float)originalImageHeight;
 
-	QRgb primaryColour = qRgb(0, 0, 0);
-	QRgb secondaryColour = qRgb(255, 255, 255);
 
-	for (size_t i = 0; i < originalImageWidth; ++i)
+	float heightPxLeftOfCurrent = 0.0f;
+	float heightPxRightOfCurrent = 0.0f;
+	float heightPxUpOfCurrent = 0.0f;
+	float heightPxDownOfCurrent = 0.0f;
+
+	for (int pxPosX = 0; pxPosX < originalImageWidth; ++pxPosX)
 	{
-		for (size_t j = 0; j < originalImageHeight; ++j)
+		for (int pxPosY = 0; pxPosY < originalImageHeight; ++pxPosY)
 		{
-			bool pastHalfWayPointX = i > halfWayWidth;
-			bool pastHalfWayPointY = j > halfWayHeight;
+			// 0 everything, the edges will assume 0.0
+			float heightPxLeftOfCurrent = 0.0f;
+			float heightPxRightOfCurrent = 0.0f;
+			float heightPxUpOfCurrent = 0.0f;
+			float heightPxDownOfCurrent = 0.0f;
 
-			bool usePrimaryColour = pastHalfWayPointX ^ pastHalfWayPointY;
-
-			if (usePrimaryColour)
-			{
-				generatedMap.setPixelColor(i, j, primaryColour);
-			}
-			else
-			{
-				generatedMap.setPixelColor(i, j, secondaryColour);
-			}
-
+			// pick up here from the first commit dev branch, main.cpp, generateBumpMap(), ln 129 +
 		}
 	}
 
