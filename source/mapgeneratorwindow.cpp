@@ -32,8 +32,8 @@ void MapGeneratorWindow::init()
 	outputMapTypes.push_back("Normal Map");
 	outputMapTypes.push_back("Edge Map");
 
-	ui->comboBox_->addItems(outputMapTypes);
-	ui->comboBox_->setCurrentIndex(1);
+	ui->comboBox_outputMapType->addItems(outputMapTypes);
+	ui->comboBox_outputMapType->setCurrentIndex(1);
 
 	// connect ui object to correct methods
 	connect(ui->actionSet_Input_Map, &QAction::triggered, this, &MapGeneratorWindow::onOpenMap);
@@ -101,7 +101,7 @@ void MapGeneratorWindow::onGenerateMapButtonPressed()
 	QPixmap defaultMap(10, 10);
 	ui->label_outputMap->setPixmap(defaultMap);
 
-	if (ui->comboBox_->currentText().toStdString() == "Normal Map")
+	if (ui->comboBox_outputMapType->currentText().toStdString() == "Normal Map")
 	{
 		float ampVal = 1.0f;
 		if (ui->lineEdit_bumpAmp->text().toStdString() != "")
@@ -110,7 +110,7 @@ void MapGeneratorWindow::onGenerateMapButtonPressed()
 		}
 		generateNormalMap(ampVal);
 	}
-	else if (ui->comboBox_->currentText().toStdString() == "Edge Map")
+	else if (ui->comboBox_outputMapType->currentText().toStdString() == "Edge Map")
 	{
 		int sensitivityVal = 50;
 		if (ui->lineEdit_edgeMapSensivity->text().toStdString() != "")
@@ -140,7 +140,7 @@ bool MapGeneratorWindow::validateInputMapCorrectForOutput()
 
 	if (ui->comboBox_inputMapType->currentText().toStdString() == "Diffuse Map")
 	{
-		if (ui->comboBox_->currentText().toStdString() == "Edge Map")
+		if (ui->comboBox_outputMapType->currentText().toStdString() == "Edge Map")
 		{
 			return true;
 		}
@@ -148,11 +148,11 @@ bool MapGeneratorWindow::validateInputMapCorrectForOutput()
 	else if (ui->comboBox_inputMapType->currentText().toStdString() == "Height Map")
 	{
 
-		if (ui->comboBox_->currentText().toStdString() == "Normal Map")
+		if (ui->comboBox_outputMapType->currentText().toStdString() == "Normal Map")
 		{
 			return true;
 		}
-		else if (ui->comboBox_->currentText().toStdString() == "Edge Map")
+		else if (ui->comboBox_outputMapType->currentText().toStdString() == "Edge Map")
 		{
 			return true;
 		}

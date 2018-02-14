@@ -78,7 +78,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <widget class="QComboBox" name="comboBox_"/>
+          <widget class="QComboBox" name="comboBox_outputMapType"/>
          </item>
          <item>
           <widget class="QPushButton" name="pushButton_generateMap">
@@ -202,6 +202,9 @@
   <action name="actionSet_Input_Map">
    <property name="text">
     <string>Set Input Map</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionSave_Output_Map">
