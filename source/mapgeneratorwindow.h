@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include <JoshMath.h>
+
 namespace Ui {
 class MapGeneratorWindow;
 }
@@ -31,7 +33,8 @@ private:
 	void generateNormalMap(float amplertude);
 
 	inline unsigned int difference(const QRgb a, const QRgb b);
-
+	inline float calcHeightMapPx(const QRgb in);
+	inline QRgb vectorToPixel(const Vector3D & in);
 
     Ui::MapGeneratorWindow *ui;
 };

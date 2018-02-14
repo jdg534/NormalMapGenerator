@@ -4,9 +4,6 @@
 #include <QFileDialog>
 #include <QValidator>
 
-#include <JoshMath.h>
-
-
 MapGeneratorWindow::MapGeneratorWindow(QWidget *parent) 
 	: QMainWindow(parent)
 	, ui(new Ui::MapGeneratorWindow)
@@ -264,7 +261,49 @@ void MapGeneratorWindow::generateNormalMap(float amplertude)
 			float heightPxUpOfCurrent = 0.0f;
 			float heightPxDownOfCurrent = 0.0f;
 
-			// pick up here from the first commit dev branch, main.cpp, generateBumpMap(), ln 129 +
+			// px left
+			if (pxPosX > 0)
+			{
+				heightPxLeftOfCurrent = calcHeightMapPx(originalImage.pixel(pxPosX - 1, pxPosY));
+			}
+
+			// px right
+			if (pxPosX < originalImageWidth - 2)
+			{
+				heightPxRightOfCurrent = calcHeightMapPx(originalImage.pixel(pxPosX + 1, pxPosY));
+			}
+
+			// px up
+			if (pxPosY > 0)
+			{
+				heightPxUpOfCurrent = calcHeightMapPx(originalImage.pixel(pxPosX, pxPosY - 1));
+			}
+
+			// px down
+			if (pxPosY < originalImageHeight- 2)
+			{
+				heightPxRightOfCurrent = calcHeightMapPx(originalImage.pixel(pxPosX, pxPosY + 1));
+			}
+
+			Vector3D s, t;
+			s.x = 1.0f;
+			s.y = 0.0f;
+			// s.z equasion here
+			s.z = amplertude * heightPxRightOfCurrent - amplertude * heightPxLeftOfCurrent;
+
+
+			t.x = 0.0f;
+			t.y = 1.0f;
+			// t.z equasion here
+			t.z = amplertude * heightPxUpOfCurrent - amplertude * heightPxDownOfCurrent;
+
+			Vector3D sCrossT = Math::VectorMath::crossProduct(s, t);
+			sCrossT = Math::VectorMath::unitVector(sCrossT);
+
+
+			QRgb valueToStore = vectorToPixel(sCrossT);
+			
+			generatedMap.setPixel(pxPosX, pxPosY, valueToStore);
 		}
 	}
 
@@ -287,4 +326,41 @@ inline unsigned int MapGeneratorWindow::difference(const QRgb a, const QRgb b)
 	diff += abs(aGreen - bGreen);
 	diff += abs(aBlue- bBlue);
 	return diff;
+}
+
+inline float MapGeneratorWindow::calcHeightMapPx(const QRgb in)
+{
+	float height = 0.0f;
+
+	const int max = 255 * 3;
+	float scale = 1.0f / static_cast<float>(max);
+
+	height += static_cast<float>(qRed(in)) * scale;
+	height += static_cast<float>(qGreen(in)) * scale;
+	height += static_cast<float>(qBlue(in)) * scale;
+
+	return height;
+}
+
+inline QRgb MapGeneratorWindow::vectorToPixel(const Vector3D & in)
+{
+	float rF, gF, bF;
+	rF = (in.x + 1.0f) / 2.0f;
+	gF = (in.y + 1.0f) / 2.0f;
+	bF = (in.z + 1.0f) / 2.0f;
+
+	// now to convert to range 0-255
+	float finRedComponent, finGreenComponent, finBlueComponent;
+	finRedComponent = rF * 255.0f;
+	finGreenComponent = gF * 255.0f;
+	finBlueComponent = bF * 255.0f;
+
+	// store as int
+	int intRedComp = static_cast<int>(finRedComponent);
+	int intGreenComp = static_cast<int>(finGreenComponent);
+	int intBlueComp = static_cast<int>(finBlueComponent);
+
+	QRgb finalPx = qRgb(intRedComp, intGreenComp, intBlueComp);
+	
+	return finalPx;
 }
