@@ -3,6 +3,7 @@
 
 #include <QFileDialog>
 #include <QValidator>
+#include <QColorDialog>
 
 MapGeneratorWindow::MapGeneratorWindow(QWidget *parent) 
 	: QMainWindow(parent)
@@ -39,6 +40,9 @@ void MapGeneratorWindow::init()
 	connect(ui->actionSet_Input_Map, &QAction::triggered, this, &MapGeneratorWindow::onOpenMap);
 	connect(ui->pushButton_generateMap, &QPushButton::pressed, this, &MapGeneratorWindow::onGenerateMapButtonPressed);
 	connect(ui->actionSave_Output_Map, &QAction::triggered, this, &MapGeneratorWindow::onSaveOutputMap);
+	connect(ui->pushButton_edgeMapPrimaryColour, &QPushButton::pressed, this, &MapGeneratorWindow::onEdgeMapPrimaryColour);
+	connect(ui->pushButton_edgeMapEdgeColour, &QPushButton::pressed, this, &MapGeneratorWindow::onEdgeMapEdgeColour);
+
 
 	// disable the generate button (gets re enabled once an input map is provided)
 	ui->pushButton_generateMap->setDisabled(true);
@@ -46,6 +50,21 @@ void MapGeneratorWindow::init()
 	// add QValidator objects for the
 	ui->lineEdit_bumpAmp->setValidator(new QDoubleValidator());
 	ui->lineEdit_edgeMapSensivity->setValidator(new QIntValidator(0, 255 * 3));
+
+
+	// set the background of the edge map colour buttons
+	QPalette primaryColourPal = ui->pushButton_edgeMapPrimaryColour->palette();
+	primaryColourPal.setColor(QPalette::Button, QColor(Qt::black));
+	ui->pushButton_edgeMapPrimaryColour->setAutoFillBackground(true);
+	ui->pushButton_edgeMapPrimaryColour->setPalette(primaryColourPal);
+	ui->pushButton_edgeMapPrimaryColour->update();
+	
+
+	QPalette edgeColourPal = ui->pushButton_edgeMapEdgeColour->palette();
+	edgeColourPal.setColor(QPalette::Button, QColor(Qt::white));
+	ui->pushButton_edgeMapEdgeColour->setAutoFillBackground(true);
+	ui->pushButton_edgeMapEdgeColour->setPalette(edgeColourPal);
+	ui->pushButton_edgeMapEdgeColour->update();
 }
 
 void MapGeneratorWindow::onOpenMap()
@@ -121,6 +140,24 @@ void MapGeneratorWindow::onGenerateMapButtonPressed()
 	}
 }
 
+void MapGeneratorWindow::onEdgeMapPrimaryColour()
+{
+	QPalette primaryColourPal = ui->pushButton_edgeMapPrimaryColour->palette();
+	primaryColourPal.setColor(QPalette::Button, QColorDialog::getColor());
+	ui->pushButton_edgeMapPrimaryColour->setAutoFillBackground(true);
+	ui->pushButton_edgeMapPrimaryColour->setPalette(primaryColourPal);
+	ui->pushButton_edgeMapPrimaryColour->update();
+}
+
+void MapGeneratorWindow::onEdgeMapEdgeColour()
+{
+	QPalette edgeColourPal = ui->pushButton_edgeMapEdgeColour->palette();
+	edgeColourPal.setColor(QPalette::Button, QColorDialog::getColor());
+	ui->pushButton_edgeMapEdgeColour->setAutoFillBackground(true);
+	ui->pushButton_edgeMapEdgeColour->setPalette(edgeColourPal);
+	ui->pushButton_edgeMapEdgeColour->update();
+}
+
 bool MapGeneratorWindow::validateInputs()
 {
 	if (!validateInputMapCorrectForOutput())
@@ -175,9 +212,14 @@ void MapGeneratorWindow::generateEdgeMap(int sensitivity)
 	size_t originalImageWidth = originalImage.width(),
 		originalImageHeight = originalImage.height();
 
+ 	QColor btnPrimaryColour = ui->pushButton_edgeMapPrimaryColour->palette().color(QPalette::ColorRole::Button);
+	QColor btnEdgeColour = ui->pushButton_edgeMapEdgeColour->palette().color(QPalette::ColorRole::Button);
 	
-	QRgb primaryColour = qRgb(0, 0, 0);
-	QRgb edgeColour = qRgb(255, 255, 255);
+	btnPrimaryColour = btnPrimaryColour.toRgb();
+	btnEdgeColour = btnEdgeColour.toRgb();
+
+	QRgb primaryColour = qRgb(btnPrimaryColour.red(), btnPrimaryColour.green(), btnPrimaryColour.blue());
+	QRgb edgeColour = qRgb(btnEdgeColour.red(), btnEdgeColour.green(), btnEdgeColour.blue());
 
 	for (size_t i = 0; i < originalImageWidth; ++i)
 	{

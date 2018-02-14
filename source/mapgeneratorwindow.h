@@ -24,11 +24,16 @@ private:
 	void onSaveOutputMap();
 	void onGenerateMapButtonPressed();
 
+	// pick colour button press handlers
+	void onEdgeMapPrimaryColour();
+	void onEdgeMapEdgeColour();
+
+
 	// validation methods
 	bool validateInputs();
 	bool validateInputMapCorrectForOutput();
 
-	// actualy generation methods
+	// generation methods
 	void generateEdgeMap(int sensitivity);
 	void generateNormalMap(float amplertude);
 
