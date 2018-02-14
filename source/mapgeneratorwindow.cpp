@@ -172,7 +172,7 @@ void MapGeneratorWindow::generateEdgeMap(int sensitivity)
 
 	QImage generatedMap(originalImage);
 
-	int originalImageWidth = originalImage.width(),
+	size_t originalImageWidth = originalImage.width(),
 		originalImageHeight = originalImage.height();
 
 	
@@ -193,9 +193,9 @@ void MapGeneratorWindow::generateEdgeMap(int sensitivity)
 	// now run the edge detection step
 	
 	// vertical scan
-	for (int x = 0; x < originalImageWidth; ++x)
+	for (size_t x = 0; x < originalImageWidth; ++x)
 	{
-		for (int y = 1; y < originalImageHeight; ++y)
+		for (size_t y = 1; y < originalImageHeight; ++y)
 		{
 			// if it's an edge set the pixel to the edge colour
 			const QRgb lastPx = originalImage.pixel(x, y - 1);
@@ -211,9 +211,9 @@ void MapGeneratorWindow::generateEdgeMap(int sensitivity)
 	}
 
 	// horisontal scan
-	for (int y = 0; y < originalImageHeight; ++y)
+	for (size_t y = 0; y < originalImageHeight; ++y)
 	{
-		for (int x = 1; x < originalImageWidth; ++x)
+		for (size_t x = 1; x < originalImageWidth; ++x)
 		{
 			// if it's an edge set the pixel to the edge colour
 			const QRgb lastPx = originalImage.pixel(x - 1, y);
