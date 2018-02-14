@@ -34,7 +34,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>415</width>
+            <width>393</width>
             <height>507</height>
            </rect>
           </property>
@@ -123,20 +123,44 @@
          <property name="title">
           <string>Edge map Controls</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QLabel" name="label_edgeMap_sensivity">
-              <property name="text">
-               <string>Sensitivity: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_edgeMapSensivity"/>
-            </item>
-           </layout>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label_edgeMap_sensivity">
+            <property name="text">
+             <string>Sensitivity: </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="lineEdit_edgeMapSensivity"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_edgeMapPrimaryColour">
+            <property name="text">
+             <string>Primary Colour:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_edgeMapPrimaryColour">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_edgeMapEdgeColourDesc">
+            <property name="text">
+             <string>Edge Colour:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_edgeMapEdgeColour">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -151,8 +175,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>415</width>
-            <height>380</height>
+            <width>437</width>
+            <height>379</height>
            </rect>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
